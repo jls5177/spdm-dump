@@ -12,14 +12,25 @@ pcap_global_header_t m_pcap_global_header;
 FILE *m_pcap_file;
 void *m_pcap_packet_data_buffer;
 
+/**
+ * Linux Cooked Capture LinkType is used by the in-kernel MCTP network interfaces
+ * https://www.tcpdump.org/linktypes/LINKTYPE_LINUX_SLL.html
+ *
+ * TODO: move this into the libspdm layer
+ */
+#define LINKTYPE_LINUX_SLL 113
+
 dispatch_table_entry_t m_pcap_dispatch[] = {
-    { LINKTYPE_MCTP, "MCTP", dump_mctp_packet },
+    { LINKTYPE_MCTP, "MCTP",       dump_mctp_packet },
+    { LINKTYPE_LINUX_SLL, "LINUX_SLL", dump_linux_sll_packet },
     { LINKTYPE_PCI_DOE, "PCI_DOE", dump_pci_doe_packet },
 };
 
 char *data_link_type_to_string(uint32_t data_link_type)
 {
     switch (data_link_type) {
+    case LINKTYPE_LINUX_SLL:
+            return "LINUX_SLL";
     case LINKTYPE_MCTP:
         return "MCTP";
     case LINKTYPE_PCI_DOE:
@@ -110,6 +121,12 @@ void dump_pcap_packet_header(size_t index,
                              const pcap_packet_header_t *pcap_packet_header)
 {
     printf("%d (%d) ", (uint32_t)index, pcap_packet_header->ts_sec);
+}
+
+void dump_linux_sll_packet(const void *buffer, size_t buffer_size)
+{
+    // drop the 16 byte header to get to the raw MCTP payload
+    dump_mctp_packet(buffer + 16, buffer_size - 16);
 }
 
 void dump_pcap_packet(const void *buffer, size_t buffer_size)

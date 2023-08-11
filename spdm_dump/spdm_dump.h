@@ -86,6 +86,8 @@ void dump_hex(const uint8_t *data, size_t size);
 
 void dump_mctp_packet(const void *buffer, size_t buffer_size);
 
+void dump_linux_sll_packet(const void *buffer, size_t buffer_size);
+
 void dump_pci_doe_packet(const void *buffer, size_t buffer_size);
 
 void dump_mctp_message(const void *buffer, size_t buffer_size);
