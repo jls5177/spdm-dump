@@ -6,7 +6,7 @@
 
 #include "spdm_dump.h"
 
-#define PCAP_PACKET_MAX_SIZE 0x00010000
+#define PCAP_PACKET_MAX_SIZE 0x00100000
 
 pcap_global_header_t m_pcap_global_header;
 FILE *m_pcap_file;
