@@ -99,6 +99,8 @@ void dump_secured_spdm_message(const void *buffer, size_t buffer_size);
 void dump_spdm_opaque_data(uint8_t spdm_version, const uint8_t *opaque_data,
                            uint16_t opaque_length);
 
+void dump_mctp_control_message(const void *buffer, size_t buffer_size);
+
 void dump_pldm_message(const void *buffer, size_t buffer_size);
 
 void dump_pci_doe_discovery_message(const void *buffer, size_t buffer_size);
